@@ -7,6 +7,24 @@ use App\Models\Group;
 
 class FirebaseCurl
 {
+    public static function send($params = array()) {
+        $response = Curl::to(env('FCM_URL', 'https://fcm.googleapis.com/fcm/') . 'send')
+            ->withHeader('Content-Type: application/json')
+            ->withHeader('Authorization: key=' . env('API_KEY'))
+            ->withData($params)->asJsonRequest()
+            ->post();
+        $response_decode = json_decode($response, true);
+        if (is_array($response_decode)) {
+            if (array_key_exists('success', $response_decode)) {
+                if ($response_decode['success'] > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    
     public static function notification($method, $params = array()) {
         $response = Curl::to(env('FCM_URL', 'https://fcm.googleapis.com/fcm/') . 'notification')
         ->withHeader('Content-Type: application/json')

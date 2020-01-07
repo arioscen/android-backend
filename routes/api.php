@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Api'], function() {
     Route::post('group/default/add', 'GroupController@add_to_default');
+    Route::post('message/default/send', 'MessageController@send_to_default');
 });
