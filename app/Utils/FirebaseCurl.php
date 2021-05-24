@@ -10,7 +10,7 @@ class FirebaseCurl
     public static function send($params = array()) {
         $response = Curl::to(env('FCM_URL', 'https://fcm.googleapis.com/fcm/') . 'send')
             ->withHeader('Content-Type: application/json')
-            ->withHeader('Authorization: key=' . env('API_KEY'))
+            ->withHeader('Authorization: key=' . env('FIREBASE_API_KEY'))
             ->withData($params)->asJsonRequest()
             ->post();
         $response_decode = json_decode($response, true);
@@ -28,8 +28,8 @@ class FirebaseCurl
     public static function notification($method, $params = array()) {
         $response = Curl::to(env('FCM_URL', 'https://fcm.googleapis.com/fcm/') . 'notification')
         ->withHeader('Content-Type: application/json')
-        ->withHeader('Authorization: key=' . env('API_KEY'))
-        ->withHeader('project_id: ' . env('SENDER_ID'));
+        ->withHeader('Authorization: key=' . env('FIREBASE_API_KEY'))
+        ->withHeader('project_id: ' . env('FIREBASE_SENDER_ID'));
         if ($method == 'post') {
             $response = $response->withData($params)->asJsonRequest()
             ->post();
